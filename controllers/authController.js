@@ -54,7 +54,7 @@ export const refresh = async (req, res) => {
         if(!match){
             return res.status(400).json({msg:"Invalid Token"})
         }
-        const acc = jwt.sign({id:match.id, email:match.email},process.env.ACCESS_SECRET,{expiresIn:"15m"})
+        const acc = jwt.sign({id:match.id, email:match.email},process.env.ACCESS_SECRET,{expiresIn:'30s'})
         res.status(200).json({msg:"new access token generated" , accesstoken:acc})
     } catch (error) {
         res.status(400).json({msg:"cookie error",error:error.message})
@@ -63,9 +63,10 @@ export const refresh = async (req, res) => {
 
 export const logout = async (req, res) => {
     try {
-
+        res.clearCookie("reftoken")
+        res.status(200).json({msg: "logout successfully"})
     } catch (error) {
-
+        res.status(400).json({msg:"Invalid"})
     }
 
 
